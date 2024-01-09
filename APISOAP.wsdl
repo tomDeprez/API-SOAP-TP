@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="urn:UserAPI"
+             name="UserAPI"
+             targetNamespace="urn:UserAPI">
+
+    <types>
+      <xsd:schema targetNamespace="urn:UserAPI">
+        <xsd:complexType name="UserResponseType">
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:int"/>
+                <xsd:element name="nom" type="xsd:string"/>
+                <xsd:element name="email" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+      </xsd:schema>
+    </types>
+
+
+    <!-- Messages pour getUser -->
+    <message name="getUserRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="getUserResponse">
+        <part name="return" type="tns:UserResponseType"/>
+    </message>
+
+    <!-- Messages pour createUser -->
+    <message name="createUserRequest">
+        <part name="nom" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+    </message>
+    <message name="createUserResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <!-- Messages pour updateUser -->
+    <message name="updateUserRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="nom" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+    </message>
+    <message name="updateUserResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <!-- Messages pour deleteUser -->
+    <message name="deleteUserRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="deleteUserResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <!-- Opérations -->
+    <portType name="UserAPIPortType">
+        <operation name="getUser">
+            <input message="tns:getUserRequest"/>
+            <output message="tns:getUserResponse"/>
+        </operation>
+        <operation name="createUser">
+            <input message="tns:createUserRequest"/>
+            <output message="tns:createUserResponse"/>
+        </operation>
+        <operation name="updateUser">
+            <input message="tns:updateUserRequest"/>
+            <output message="tns:updateUserResponse"/>
+        </operation>
+        <operation name="deleteUser">
+            <input message="tns:deleteUserRequest"/>
+            <output message="tns:deleteUserResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Bindings -->
+    <binding name="UserAPIBinding" type="tns:UserAPIPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+        <operation name="getUser">
+            <soap:operation soapAction="urn:UserAPI#getUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="createUser">
+            <soap:operation soapAction="urn:UserAPI#createUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="updateUser">
+            <soap:operation soapAction="urn:UserAPI#updateUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="deleteUser">
+            <soap:operation soapAction="urn:UserAPI#deleteUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+
+    <!-- Service -->
+    <service name="UserAPIService">
+        <port name="UserAPIPort" binding="tns:UserAPIBinding">
+            <soap:address location="http://10.21.6.24/API-SOAP/APISOAP.php"/>
+        </port>
+    </service>
+</definitions>
