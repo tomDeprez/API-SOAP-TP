@@ -8,18 +8,60 @@
 
     <types>
       <xsd:schema targetNamespace="urn:UserAPI">
+        <!-- Types pour les utilisateurs -->
         <xsd:complexType name="UserResponseType">
             <xsd:sequence>
                 <xsd:element name="id" type="xsd:int"/>
                 <xsd:element name="nom" type="xsd:string"/>
                 <xsd:element name="email" type="xsd:string"/>
+                <xsd:element name="created_at" type="xsd:string"/>
+                <xsd:element name="updated_at" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <!-- Types pour les commandes -->
+        <xsd:complexType name="CommandeResponseType">
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:int"/>
+                <xsd:element name="user_id" type="xsd:int"/>
+                <xsd:element name="numero_commande" type="xsd:string"/>
+                <xsd:element name="statut" type="xsd:string"/>
+                <xsd:element name="montant" type="xsd:decimal"/>
+                <xsd:element name="adresse_livraison" type="xsd:string"/>
+                <xsd:element name="nom_utilisateur" type="xsd:string"/>
+                <xsd:element name="email" type="xsd:string"/>
+                <xsd:element name="created_at" type="xsd:string"/>
+                <xsd:element name="updated_at" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <!-- Types pour les produits -->
+        <xsd:complexType name="ProduitResponseType">
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:int"/>
+                <xsd:element name="nom" type="xsd:string"/>
+                <xsd:element name="description" type="xsd:string"/>
+                <xsd:element name="prix" type="xsd:decimal"/>
+                <xsd:element name="stock" type="xsd:int"/>
+                <xsd:element name="categorie" type="xsd:string"/>
+                <xsd:element name="created_at" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <!-- Types pour les statistiques -->
+        <xsd:complexType name="StatistiquesResponseType">
+            <xsd:sequence>
+                <xsd:element name="total_utilisateurs" type="xsd:int"/>
+                <xsd:element name="total_commandes" type="xsd:int"/>
+                <xsd:element name="montant_total" type="xsd:decimal"/>
+                <xsd:element name="total_produits" type="xsd:int"/>
+                <xsd:element name="commandes_par_statut" type="xsd:string"/>
             </xsd:sequence>
         </xsd:complexType>
       </xsd:schema>
     </types>
 
-
-    <!-- Messages pour getUser -->
+    <!-- Messages pour les utilisateurs -->
     <message name="getUserRequest">
         <part name="id" type="xsd:int"/>
     </message>
@@ -27,7 +69,12 @@
         <part name="return" type="tns:UserResponseType"/>
     </message>
 
-    <!-- Messages pour createUser -->
+    <message name="getAllUsersRequest">
+    </message>
+    <message name="getAllUsersResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
     <message name="createUserRequest">
         <part name="nom" type="xsd:string"/>
         <part name="email" type="xsd:string"/>
@@ -36,7 +83,6 @@
         <part name="return" type="xsd:string"/>
     </message>
 
-    <!-- Messages pour updateUser -->
     <message name="updateUserRequest">
         <part name="id" type="xsd:int"/>
         <part name="nom" type="xsd:string"/>
@@ -46,7 +92,6 @@
         <part name="return" type="xsd:string"/>
     </message>
 
-    <!-- Messages pour deleteUser -->
     <message name="deleteUserRequest">
         <part name="id" type="xsd:int"/>
     </message>
@@ -54,11 +99,127 @@
         <part name="return" type="xsd:string"/>
     </message>
 
+    <!-- Messages pour les commandes -->
+    <message name="getCommandeRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="getCommandeResponse">
+        <part name="return" type="tns:CommandeResponseType"/>
+    </message>
+
+    <message name="getAllCommandesRequest">
+    </message>
+    <message name="getAllCommandesResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="getCommandesByUserRequest">
+        <part name="user_id" type="xsd:int"/>
+    </message>
+    <message name="getCommandesByUserResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="createCommandeRequest">
+        <part name="user_id" type="xsd:int"/>
+        <part name="numero_commande" type="xsd:string"/>
+        <part name="montant" type="xsd:decimal"/>
+        <part name="adresse_livraison" type="xsd:string"/>
+    </message>
+    <message name="createCommandeResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="updateCommandeStatutRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="statut" type="xsd:string"/>
+    </message>
+    <message name="updateCommandeStatutResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="deleteCommandeRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="deleteCommandeResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <!-- Messages pour les produits -->
+    <message name="getProduitRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="getProduitResponse">
+        <part name="return" type="tns:ProduitResponseType"/>
+    </message>
+
+    <message name="getAllProduitsRequest">
+    </message>
+    <message name="getAllProduitsResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="getProduitsByCategorieRequest">
+        <part name="categorie" type="xsd:string"/>
+    </message>
+    <message name="getProduitsByCategorieResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="createProduitRequest">
+        <part name="nom" type="xsd:string"/>
+        <part name="description" type="xsd:string"/>
+        <part name="prix" type="xsd:decimal"/>
+        <part name="stock" type="xsd:int"/>
+        <part name="categorie" type="xsd:string"/>
+    </message>
+    <message name="createProduitResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="updateProduitRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="nom" type="xsd:string"/>
+        <part name="description" type="xsd:string"/>
+        <part name="prix" type="xsd:decimal"/>
+        <part name="stock" type="xsd:int"/>
+        <part name="categorie" type="xsd:string"/>
+    </message>
+    <message name="updateProduitResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <message name="deleteProduitRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="deleteProduitResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <!-- Messages pour les statistiques et recherche -->
+    <message name="getStatistiquesRequest">
+    </message>
+    <message name="getStatistiquesResponse">
+        <part name="return" type="tns:StatistiquesResponseType"/>
+    </message>
+
+    <message name="rechercherProduitsRequest">
+        <part name="terme" type="xsd:string"/>
+    </message>
+    <message name="rechercherProduitsResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
     <!-- Opérations -->
     <portType name="UserAPIPortType">
+        <!-- Opérations utilisateurs -->
         <operation name="getUser">
             <input message="tns:getUserRequest"/>
             <output message="tns:getUserResponse"/>
+        </operation>
+        <operation name="getAllUsers">
+            <input message="tns:getAllUsersRequest"/>
+            <output message="tns:getAllUsersResponse"/>
         </operation>
         <operation name="createUser">
             <input message="tns:createUserRequest"/>
@@ -72,14 +233,82 @@
             <input message="tns:deleteUserRequest"/>
             <output message="tns:deleteUserResponse"/>
         </operation>
+
+        <!-- Opérations commandes -->
+        <operation name="getCommande">
+            <input message="tns:getCommandeRequest"/>
+            <output message="tns:getCommandeResponse"/>
+        </operation>
+        <operation name="getAllCommandes">
+            <input message="tns:getAllCommandesRequest"/>
+            <output message="tns:getAllCommandesResponse"/>
+        </operation>
+        <operation name="getCommandesByUser">
+            <input message="tns:getCommandesByUserRequest"/>
+            <output message="tns:getCommandesByUserResponse"/>
+        </operation>
+        <operation name="createCommande">
+            <input message="tns:createCommandeRequest"/>
+            <output message="tns:createCommandeResponse"/>
+        </operation>
+        <operation name="updateCommandeStatut">
+            <input message="tns:updateCommandeStatutRequest"/>
+            <output message="tns:updateCommandeStatutResponse"/>
+        </operation>
+        <operation name="deleteCommande">
+            <input message="tns:deleteCommandeRequest"/>
+            <output message="tns:deleteCommandeResponse"/>
+        </operation>
+
+        <!-- Opérations produits -->
+        <operation name="getProduit">
+            <input message="tns:getProduitRequest"/>
+            <output message="tns:getProduitResponse"/>
+        </operation>
+        <operation name="getAllProduits">
+            <input message="tns:getAllProduitsRequest"/>
+            <output message="tns:getAllProduitsResponse"/>
+        </operation>
+        <operation name="getProduitsByCategorie">
+            <input message="tns:getProduitsByCategorieRequest"/>
+            <output message="tns:getProduitsByCategorieResponse"/>
+        </operation>
+        <operation name="createProduit">
+            <input message="tns:createProduitRequest"/>
+            <output message="tns:createProduitResponse"/>
+        </operation>
+        <operation name="updateProduit">
+            <input message="tns:updateProduitRequest"/>
+            <output message="tns:updateProduitResponse"/>
+        </operation>
+        <operation name="deleteProduit">
+            <input message="tns:deleteProduitRequest"/>
+            <output message="tns:deleteProduitResponse"/>
+        </operation>
+
+        <!-- Opérations statistiques et recherche -->
+        <operation name="getStatistiques">
+            <input message="tns:getStatistiquesRequest"/>
+            <output message="tns:getStatistiquesResponse"/>
+        </operation>
+        <operation name="rechercherProduits">
+            <input message="tns:rechercherProduitsRequest"/>
+            <output message="tns:rechercherProduitsResponse"/>
+        </operation>
     </portType>
 
     <!-- Bindings -->
     <binding name="UserAPIBinding" type="tns:UserAPIPortType">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
         
+        <!-- Bindings utilisateurs -->
         <operation name="getUser">
             <soap:operation soapAction="urn:UserAPI#getUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="getAllUsers">
+            <soap:operation soapAction="urn:UserAPI#getAllUsers"/>
             <input><soap:body use="literal"/></input>
             <output><soap:body use="literal"/></output>
         </operation>
@@ -98,12 +327,88 @@
             <input><soap:body use="literal"/></input>
             <output><soap:body use="literal"/></output>
         </operation>
+
+        <!-- Bindings commandes -->
+        <operation name="getCommande">
+            <soap:operation soapAction="urn:UserAPI#getCommande"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="getAllCommandes">
+            <soap:operation soapAction="urn:UserAPI#getAllCommandes"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="getCommandesByUser">
+            <soap:operation soapAction="urn:UserAPI#getCommandesByUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="createCommande">
+            <soap:operation soapAction="urn:UserAPI#createCommande"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="updateCommandeStatut">
+            <soap:operation soapAction="urn:UserAPI#updateCommandeStatut"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="deleteCommande">
+            <soap:operation soapAction="urn:UserAPI#deleteCommande"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+        <!-- Bindings produits -->
+        <operation name="getProduit">
+            <soap:operation soapAction="urn:UserAPI#getProduit"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="getAllProduits">
+            <soap:operation soapAction="urn:UserAPI#getAllProduits"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="getProduitsByCategorie">
+            <soap:operation soapAction="urn:UserAPI#getProduitsByCategorie"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="createProduit">
+            <soap:operation soapAction="urn:UserAPI#createProduit"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="updateProduit">
+            <soap:operation soapAction="urn:UserAPI#updateProduit"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="deleteProduit">
+            <soap:operation soapAction="urn:UserAPI#deleteProduit"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+        <!-- Bindings statistiques et recherche -->
+        <operation name="getStatistiques">
+            <soap:operation soapAction="urn:UserAPI#getStatistiques"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="rechercherProduits">
+            <soap:operation soapAction="urn:UserAPI#rechercherProduits"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
     </binding>
 
     <!-- Service -->
     <service name="UserAPIService">
         <port name="UserAPIPort" binding="tns:UserAPIBinding">
-            <soap:address location="http://10.21.6.24/API-SOAP/APISOAP.php"/>
+            <soap:address location="http://localhost:8000/APISOAP.php"/>
         </port>
     </service>
 </definitions>
